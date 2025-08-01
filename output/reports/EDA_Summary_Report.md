@@ -204,7 +204,3 @@ All charts saved to `/output/charts/` directory:
 3. **ROI Analysis**: Quantify impact of retention initiatives
 
 ---
-
-*Report Generated: July 30, 2025*  
-*Data Source: telcom_behavior.csv (505,207 records)*  
-*Analysis Tool: Jupyter Notebook with Python (pandas, matplotlib, seaborn)*
