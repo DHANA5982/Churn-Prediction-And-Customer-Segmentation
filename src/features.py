@@ -7,6 +7,7 @@ def preprocess_features(df):
 
     X = df[features]
     if 'Churn' in df.columns:
+        df['Churn'] = None
         y = df['Churn']
 
     scaler = StandardScaler()

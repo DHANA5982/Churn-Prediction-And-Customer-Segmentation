@@ -14,9 +14,12 @@ def load_and_clean_data(path):
 
     # Float to integer datatypes to necessary columns
     cols = ['CustomerID', 'Age', 'Tenure', 'Usage_Frequency', 'Support_Calls', 
-        'Payment_Delay', 'Last_Interaction', 'Churn']
+        'Payment_Delay', 'Last_Interaction']
     for col in cols:
         df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(int)
+    
+    if 'Churn' in df.columns:
+        df['Churn'] = pd.to_numeric(df['Churn'], errors='coerce').fillna(0).astype(int)
 
     sub = {'Basic':1, 'Standard': 2, 'Premium': 3}
     df['Subscription_Type'] = df['Subscription_Type'].map(sub)
