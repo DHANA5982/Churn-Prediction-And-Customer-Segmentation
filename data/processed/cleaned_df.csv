@@ -1,0 +1,6 @@
+CustomerID,Age,Gender,Tenure,Usage_Frequency,Support_Calls,Payment_Delay,Subscription_Type,Contract_Length,Total_Spend,Last_Interaction,Churn
+2,30,0,39,14,5,18,2,3,932.0,17,1
+3,65,0,49,1,10,8,1,1,557.0,6,1
+4,55,0,14,4,6,18,1,2,185.0,3,1
+5,58,1,38,21,7,7,2,1,396.0,29,1
+6,23,1,32,20,5,8,1,1,617.0,20,1
