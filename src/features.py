@@ -6,7 +6,8 @@ def preprocess_features(df):
                 'Payment_Delay', 'Subscription_Type', 'Total_Spend', 'Contract_Length']
 
     X = df[features]
-    y = df['Churn']
+    if 'Churn' in df.columns:
+        y = df['Churn']
 
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)

@@ -1,7 +1,10 @@
 import pandas as pd
 
 def load_and_clean_data(path):
-    df = pd.read_csv(path)
+    try:
+        df = pd.read_csv(path)
+    except Exception as e:
+        print(e)
 
     # Strip whitespace
     df.columns = df.columns.str.strip().str.replace(' ', '_')
