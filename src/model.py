@@ -3,6 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 import numpy as np
+import joblib
 import time
 
 def train_churn_model(X, y):
@@ -30,10 +31,10 @@ def train_churn_model(X, y):
 
     rf = RandomForestClassifier(random_state=42)
     param_grid = {
-        'n_estimators': [100, 300],
-        'max_depth': [5, None],
-        'min_samples_split': [2, 5],
-        'min_samples_leaf': [1, 2],
+        'n_estimators': [50, 100, 200, 300],
+        'max_depth': [5, 10, 15, None],
+        'min_samples_split': [1, 5, 10],
+        'min_samples_leaf': [1, 2, 5],
         'max_features': ['sqrt', 'log2']
     }
 
@@ -65,3 +66,6 @@ def train_churn_model(X, y):
     print(classification_report(y_test, y_pred_test))
     print(f"Accuracy: {accuracy_score(y_test, y_pred_test):.2f}")
     print(f"F1 Score: {f1_score(y_test, y_pred_test):.2f}")
+
+    joblib.dump(best_model, 'models/churn_prediction_model.pkl', compress=3)
+    print("✅ Model saved to: models/churn_model.pkl")
