@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-from data_cleaning import load_and_clean_data
-from data_preparation import preprocess_features
+from src.data_cleaning import load_and_clean_data
+from src.data_preparation import preprocess_features
 import joblib
 
 # Load model
@@ -28,7 +28,7 @@ if input_mode == "📁 Upload CSV":
             cleaned_df = load_and_clean_data(uploaded_file)
             st.subheader("🔍 Preview of cleaned Data")
             st.dataframe(cleaned_df.head())
-            X, _, _ = preprocess_features(cleaned_df)
+            X, _ = preprocess_features(cleaned_df)
         except Exception as e:
             st.error(e)
 
