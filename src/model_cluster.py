@@ -15,10 +15,4 @@ def run_customer_segmentation(X,_):
     X['Cluster'] = pipeline.fit_predict(X)
     joblib.dump(pipeline, 'models/segment_model.pkl')
     
-    print(X['Cluster'].value_counts().plot(kind='bar', title='Segment Distribution'))
-    plt.savefig('output/charts/segment_distribution.png')
-
-    # Save cluster profiles
-    segment_profiles = X.groupby('Cluster').mean()
-    segment_profiles.to_csv('data/cluster/segment_profiles.csv')
     print(X['Cluster'].value_counts())

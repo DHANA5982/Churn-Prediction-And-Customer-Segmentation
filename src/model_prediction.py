@@ -25,11 +25,11 @@ def train_churn_model(X, y):
 
     # Hyperparameter grid for the RF step
     param_grid = {
-        'rf__n_estimators': [300],
-        'rf__max_depth': [10],
-        'rf__min_samples_split': [5],
-        'rf__min_samples_leaf': [1],
-        'rf__max_features': ['sqrt']
+        'rf__n_estimators': [50, 100, 200, 300],
+        'rf__max_depth': [5, 10, 20, None],
+        'rf__min_samples_split': [2, 5, 7, 9],
+        'rf__min_samples_leaf': [1, 2, 5, 10],
+        'rf__max_features': ['sqrt', 'log2']
     }
 
     # Stratified K-Fold
