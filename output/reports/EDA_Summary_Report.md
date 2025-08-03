@@ -40,7 +40,7 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 ## 2. Target Variable Analysis
 
 ### Churn Distribution
-![Churn Distribution](output/charts/churn_distribution.png)
+![Churn Distribution](../charts/churn_distribution.png)
 
 **Key Insights:**
 - **Churn Rate**: 55.5% of customers have churned
@@ -52,7 +52,7 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 ## 3. Univariate Analysis
 
 ### Age Distribution
-![Age Distribution](output/charts/age_distribution.png)
+![Age Distribution](../charts/age_distribution.png)
 
 **Key Insights:**
 - **Age Range**: Customers span 18-65 years
@@ -61,28 +61,28 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 - **Young Market**: Limited engagement in under-25 age group
 
 ### Subscription Type Distribution
-![Subscription Type Distribution](output/charts/subscription_type_distribution.png)
+![Subscription Type Distribution](../charts/subscription_type_distribution.png)
 
 **Key Insights:**
 - Distribution across Basic, Standard, and Premium tiers
 - Indicates diverse customer base with varying service needs
 
 ### Contract Length Distribution
-![Contract Length Distribution](output/charts/contract_length_distribution.png)
+![Contract Length Distribution](../charts/contract_length_distribution.png)
 
 **Key Insights:**
 - Three contract types: Monthly, Quarterly, Annual
 - Contract length appears to be a key retention factor
 
 ### Usage Frequency Distribution
-![Usage Frequency Distribution](output/charts/usage_frequency_distribution.png)
+![Usage Frequency Distribution](../charts/usage_frequency_distribution.png)
 
 **Key Insights:**
 - Shows variation in customer engagement levels
 - Usage patterns may correlate with churn behavior
 
 ### Last Interaction Distribution
-![Last Interaction Distribution](output/charts/last_interaction_distribution.png)
+![Last Interaction Distribution](../charts/last_interaction_distribution.png)
 
 **Key Insights:**
 - **High Early Engagement**: Strong interaction in first 0-14 days (~20,000 customers)
@@ -94,7 +94,7 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 ## 4. Bivariate Analysis
 
 ### Subscription Type vs Total Spend by Churn
-![Subscription Type vs Total Spend](output/charts/subscription_type_total_spend.png)
+![Subscription Type vs Total Spend](../charts/subscription_type_total_spend.png)
 
 **Key Insights:**
 - **Premium Value**: Premium customers show highest spending regardless of churn status
@@ -102,14 +102,14 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 - **Revenue Risk**: Lower spending patterns among churned customers indicate revenue loss
 
 ### Churn vs Tenure
-![Churn vs Tenure](output/charts/churn_tenure.png)
+![Churn vs Tenure](../charts/churn_tenure.png)
 
 **Key Insights:**
 - Tenure relationship with churn behavior
 - Longer tenure may indicate higher loyalty
 
 ### Contract Length vs Churn
-![Contract Length vs Churn](output/charts/contract_length_churn.png)
+![Contract Length vs Churn](../charts/contract_length_churn.png)
 
 **Key Insights:**
 - **Monthly Contracts**: High churn risk with disproportionate churn rates
@@ -117,7 +117,7 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 - **Quarterly Contracts**: Moderate retention between monthly and annual
 
 ### Subscription Type vs Churn
-![Subscription Type vs Churn](output/charts/subscription_type_churn.png)
+![Subscription Type vs Churn](../charts/subscription_type_churn.png)
 
 **Key Insights:**
 - Different churn patterns across subscription tiers
@@ -128,7 +128,7 @@ Features: CustomerID, Age, Gender, Tenure, Usage Frequency, Support Calls,
 ## 5. Correlation Analysis
 
 ### Correlation Heatmap
-![Correlation Heatmap](output/charts/heatmap.png)
+![Correlation Heatmap](../charts/heatmap.png)
 
 ### Key Correlations with Churn:
 
