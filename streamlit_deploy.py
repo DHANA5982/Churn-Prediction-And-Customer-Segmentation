@@ -4,14 +4,15 @@ from src.data_cleaning import load_and_clean_data
 from src.data_preparation import preprocess_features
 import joblib
 
-# Load model
+# Load models
 model = joblib.load("D:/GitHub/Churn Prediction and Customer Segmentation/models/churn_prediction_model.pkl")
+seg_model = joblib.load("D:/GitHub/Churn Prediction and Customer Segmentation/models/segment_model.pkl")
 
-# Feature list
+# Feature list used in both models
 features = ['Age', 'Gender', 'Tenure', 'Usage_Frequency', 'Support_Calls', 'Last_Interaction',
             'Payment_Delay', 'Subscription_Type', 'Total_Spend', 'Contract_Length']
 
-st.title("📊 Customer Churn Prediction Dashboard")
+st.title("📊 Customer Churn & Segmentation Dashboard")
 
 st.sidebar.header("🔧 Choose Input Method")
 input_mode = st.sidebar.radio("How would you like to input data?", ["📁 Upload CSV", "🧍 Manual Entry"])
@@ -21,33 +22,43 @@ input_mode = st.sidebar.radio("How would you like to input data?", ["📁 Upload
 # -------------------------------
 if input_mode == "📁 Upload CSV":
     st.write('Required features list with sensible datatypes:')
-    st.write(f'{features}')
+    st.code(features)
     uploaded_file = st.file_uploader("Upload customer CSV", type=["csv"])
+
     if uploaded_file:
         try:
             cleaned_df = load_and_clean_data(uploaded_file)
-            st.subheader("🔍 Preview of cleaned Data")
+            st.subheader("🔍 Preview of Cleaned Data")
             st.dataframe(cleaned_df.head())
+
             X, _ = preprocess_features(cleaned_df)
         except Exception as e:
-            st.error(e)
+            st.error(f"Error while preprocessing: {e}")
 
-        if st.button("Predict Churn"):
+        if st.button("🔮 Predict Churn & Segment"):
             try:
-                predictions = model.predict(X)
-            
-                if not isinstance(X, pd.DataFrame):
-                    X = pd.DataFrame(X, columns=features)  # use your actual feature names here
-                X['Churn_Prediction'] = predictions
-                st.success("✅ Predictions completed")
-                st.dataframe(X[['Churn_Prediction']])
+                churn_preds = model.predict(X)
+                churn_probs = model.predict_proba(X)[:, 1]
+                clusters = seg_model.predict(X)
+
+                cleaned_df['Churn_Prediction'] = churn_preds
+                cleaned_df['Churn_Probability'] = churn_probs
+                cleaned_df['Customer_Segment'] = clusters
+
+                st.success("✅ Predictions completed!")
+                st.dataframe(cleaned_df[['Churn_Prediction', 'Churn_Probability', 'Customer_Segment']])
 
                 st.subheader("📈 Churn Breakdown")
-                st.write(X['Churn_Prediction'].value_counts())
+                st.bar_chart(cleaned_df['Churn_Prediction'].value_counts())
 
-                st.download_button("Download Results", X.to_csv(index=False), file_name="churn_predictions.csv")
+                st.subheader("🧩 Segment Distribution")
+                st.bar_chart(cleaned_df['Customer_Segment'].value_counts())
+
+                st.download_button("⬇ Download Results",
+                                   cleaned_df.to_csv(index=False),
+                                   file_name="churn_segment_predictions.csv")
             except Exception as e:
-                st.error(e)
+                st.error(f"Prediction failed: {e}")
 
 # -------------------------------
 # 🧍 Option 2: Manual Entry
@@ -55,12 +66,13 @@ if input_mode == "📁 Upload CSV":
 elif input_mode == "🧍 Manual Entry":
     st.subheader("🔢 Enter Customer Info")
 
+    # Categorical selections
     gender = st.selectbox("Gender", ["Male", "Female"])
     sub_type = st.selectbox("Subscription Type", ["Basic", "Standard", "Premium"])
-    con_length = st.selectbox("Contract Length (months)", ['Monthly', 'Quarterly', 'Annual'])
-    
-    # Input fields
-    age = st.number_input("Age", min_value=18, max_value=90, value=30)
+    con_length = st.selectbox("Contract Length", ["Monthly", "Quarterly", "Annual"])
+
+    # Numeric inputs
+    age = st.number_input("Age", min_value=18, max_value=100, value=30)
     tenure = st.slider("Tenure (months)", 0, 60, 12)
     usage = st.slider("Usage Frequency (times/month)", 0, 100, 20)
     support_calls = st.number_input("Support Calls (past 6 months)", 0, 50, 2)
@@ -68,13 +80,10 @@ elif input_mode == "🧍 Manual Entry":
     payment_delay = st.slider("Payment Delay (days)", 0, 60, 5)
     total_spend = st.number_input("Total Spend ($)", 0.0, 10000.0, 500.0)
 
-    # Map categorical values if needed
+    # Mapping categorical to numerical
     gender_val = 1 if gender == "Male" else 0
-    sub_map = {"Basic": 1, "Standard": 2, "Premium": 3}
-    sub_val = sub_map[sub_type]
-    con_map = {'Monthly': 1, 'Quarterly': 2, 'Annual': 3}
-    con_val = con_map[con_length]
-
+    sub_val = {"Basic": 1, "Standard": 2, "Premium": 3}[sub_type]
+    con_val = {"Monthly": 1, "Quarterly": 2, "Annual": 3}[con_length]
 
     input_df = pd.DataFrame([{
         'Age': age,
@@ -92,8 +101,53 @@ elif input_mode == "🧍 Manual Entry":
     st.write("📋 Input Preview")
     st.dataframe(input_df)
 
-    if st.button("🧠 Predict Churn"):
-        prediction = model.predict(input_df)[0]
-        prob = model.predict_proba(input_df)[0][1]
-        st.success(f"✅ Prediction: {'Churn' if prediction else 'No Churn'} (Probability: {prob:.2f})")
+    if st.button("🧠 Predict"):
+        try:
+            churn_pred = model.predict(input_df)[0]
+            churn_prob = model.predict_proba(input_df)[0][1]
+            segment = seg_model.predict(input_df)[0]
+
+            st.success(f"✅ Prediction: {'Churn' if churn_pred else 'No Churn'} (Probability: {churn_prob:.2f})")
+            st.info(f"🧩 Customer Segment: {segment}")
+
+             # Segment dictionary
+            segment_info = {
+                0: {
+                    "label": "High-Risk Monthly Customers",
+                    "risk": "🔴 HIGH RISK",
+                    "desc": "Monthly contract customers with high support needs, frequent payment delays, and low spending.",
+                    "plan": "📌 Action Plan: Prioritize retention efforts with loyalty offers or incentives for longer contracts."
+                },
+                1: {
+                    "label": "Stable Value Customers",
+                    "risk": "🟢 LOW RISK",
+                    "desc": "Reliable, low-maintenance customers with consistent payments and long contracts.",
+                    "plan": "📌 Action Plan: Consider loyalty perks or upsell premium services."
+                },
+                2: {
+                    "label": "Premium Troubled Customers",
+                    "risk": "🟡 MEDIUM-HIGH RISK",
+                    "desc": "Premium subscribers experiencing high support needs and payment delays.",
+                    "plan": "📌 Action Plan: Address service issues urgently to avoid losing high-value clients."
+                },
+                3: {
+                    "label": "Premium Male Loyalists",
+                    "risk": "🟢 LOW RISK",
+                    "desc": "Young male premium users with high spend and minimal support needs.",
+                    "plan": "📌 Action Plan: Engage with exclusive upgrades, referral programs, and premium loyalty campaigns."
+                }
+            }
+
+            seg = segment_info.get(segment)
+            
+            if seg:
+                st.subheader(f"📊 Segment Profile: {seg['label']} ({seg['risk']})")
+                st.markdown(f"**Who they are:** {seg['desc']}")
+                st.markdown(seg["plan"])
+            else:
+                st.warning("Segment not recognized.")
+
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
+
 
