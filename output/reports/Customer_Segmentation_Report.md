@@ -13,7 +13,7 @@ This report presents a comprehensive analysis of customer segmentation based on 
 - **Segmentation Features**: Age, Gender, Tenure, Usage Frequency, Support Calls, Last Interaction, Payment Delay, Subscription Type, Total Spend, Contract Length
 
 ### Segment Distribution
-![Segment Distribution](output/charts/segment_distribution.png)
+![Segment Distribution](../charts/segment_distribution.png)
 
 ---
 
