@@ -1,12 +1,47 @@
 import streamlit as st
 import pandas as pd
-from src.data_cleaning import load_and_clean_data
-from src.data_preparation import preprocess_features
+import os
 import joblib
 
+# Import your custom modules
+try:
+    from src.data_cleaning import load_and_clean_data
+    from src.data_preparation import preprocess_features
+except ImportError as e:
+    st.error(f"Failed to import modules: {e}")
+    st.stop()
+
+# Load models with error handling
+@st.cache_resource
+def load_models():
+    """Load models with caching and error handling."""
+    try:
+        # Use relative paths for cloud deployment
+        model_path = "models/churn_prediction_model.pkl"
+        segment_path = "models/segment_model.pkl"
+        
+        if not os.path.exists(model_path):
+            st.error(f"Model file not found: {model_path}")
+            return None, None
+            
+        if not os.path.exists(segment_path):
+            st.error(f"Segment model file not found: {segment_path}")
+            return None, None
+            
+        model = joblib.load(model_path)
+        seg_model = joblib.load(segment_path)
+        
+        return model, seg_model
+    except Exception as e:
+        st.error(f"Error loading models: {e}")
+        return None, None
+
 # Load models
-model = joblib.load("D:/GitHub/Churn Prediction and Customer Segmentation/models/churn_prediction_model.pkl")
-seg_model = joblib.load("D:/GitHub/Churn Prediction and Customer Segmentation/models/segment_model.pkl")
+model, seg_model = load_models()
+
+if model is None or seg_model is None:
+    st.error("Failed to load models. Please check the deployment.")
+    st.stop()
 
 # Feature list used in both models
 features = ['Age', 'Gender', 'Tenure', 'Usage_Frequency', 'Support_Calls', 'Last_Interaction',
