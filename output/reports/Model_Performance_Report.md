@@ -235,8 +235,7 @@ The 9-percentage-point improvement over baseline, combined with near-perfect chu
 
 **Recommendation**: Deploy immediately to production for real-time churn prediction and proactive customer retention.
 
----
+--- 
 *Final Model: Random Forest (300 estimators, max_depth=10)*  
 *Test Performance: 93% Accuracy, 94% F1-Score*  
 *Status: ✅ Ready for Production Deployment*
-
