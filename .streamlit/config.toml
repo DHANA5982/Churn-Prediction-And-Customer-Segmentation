@@ -1,0 +1,23 @@
+[global]
+# Streamlit sharing configuration
+developmentMode = false
+showErrorDetails = false
+
+[server]
+# Optimize for cloud deployment
+port = 8501
+enableCORS = false
+enableXsrfProtection = true
+maxUploadSize = 50
+
+[theme]
+# Optional: customize theme
+primaryColor = "#ff6b6b"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0f2f6"
+textColor = "#262730"
+font = "sans serif"
+
+[browser]
+# Browser settings for cloud
+gatherUsageStats = false
